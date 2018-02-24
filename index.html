@@ -7,10 +7,21 @@
 		<title>reveal.js</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+		<!-- <link rel="stylesheet" href="css/theme/white.css"> -->
+		<!-- <link rel="stylesheet" href="css/theme/black.css"> -->
+		<!-- <link rel="stylesheet" href="css/theme/league.css"> -->
+		<!-- <link rel="stylesheet" href="css/theme/sky.css"> -->
+		<!-- <link rel="stylesheet" href="css/theme/beige.css"> -->
+		<!-- <link rel="stylesheet" href="css/theme/simple.css"> -->
+		<!-- <link rel="stylesheet" href="css/theme/serif.css"> -->
+		<!-- <link rel="stylesheet" href="css/theme/blood.css"> -->
+		<!-- <link rel="stylesheet" href="css/theme/night.css"> -->
+		<!-- <link rel="stylesheet" href="css/theme/moon.css"> -->
+		<link rel="stylesheet" href="css/theme/solarized.css">
 
 		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+		<!-- <link rel="stylesheet" href="lib/css/zenburn.css"> -->
+		<link rel="stylesheet" href="lib/css/solarized-light.css">
 
 		<!-- Printing and PDF exports -->
 		<script>
@@ -24,8 +35,1664 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section>
+          <h1>Haskell Workshops</h1>
+          <h3>Adam Szlachta</h3>
+          <h4>adam.szlachta@gmail.com</h4>
+        </section>
+        <section>
+            <img src="img/haskell-comp1.jpg">
+        </section>
+        <section>
+            <img src="img/haskell-comp2.jpg">
+        </section>
+        <section>
+            <img src="img/haskell-comp3.jpg">
+        </section>
+				<section>
+          <h1>Influenced by</h1>
+          <p>Clean, FP, Gofer, Hope and Hope+, Id, ISWIM, KRC, Lisp, Miranda, ML and Standard ML, Orwell, SASL, Scheme, SISAL</p>
+          <p><img src="img/miranda.jpg"></p>
+          <p><img src="img/lisp.png" width="200"></p>
+        </section>
+        <section>
+          <h1>Influenced</h1>
+          <p>Agda, Bluespec, C++11/Concepts, C#/LINQ, CAL, Cayenne, Clean, Clojure, CoffeeScript,
+          Curry, Elm, Epigram, Escher, F#, Frege, Hack, Idris, Isabelle, Java/Generics,
+          LiveScript, Mercury, Ωmega, Perl 6, Python, Rust, Scala, Swift, Timber, Visual Basic 9.0</p>
+          <p>
+            <img src="img/elm.png" width="200">
+            <img src="img/purescript.png" width="200">
+            <img src="img/idris.png" width="200">
+          </p>
+          <p><img src="img/scala.png" width="200"></p>
+        </section>
+        <section>
+            <img src="img/curve-php.png">
+        </section>
+        <section>
+            <img src="img/curve-python.png">
+        </section>
+        <section>
+            <img src="img/curve-js.png">
+        </section>
+        <section>
+            <img src="img/curve-java.png">
+        </section>
+        <section>
+            <img src="img/curve-cpp.png">
+        </section>
+        <section>
+            <img src="img/curve-lisp.png">
+        </section>
+        <section>
+            <img src="img/curve-haskell.png">
+        </section>
+        <section>
+            <img src="img/curves-all.jpg">
+        </section>
+
+				<section>
+					<h2>Stack</h2>
+					<pre><code class="bash" data-trim contenteditable>
+            $ git --version
+            git version 2.16.1
+
+            $ ghc --version                                                                                                                                                                ⏎  dktn@DktnMBP 2:48:57AM
+            The Glorious Glasgow Haskell Compilation System, version 8.2.2
+
+            $ stack --version
+            Version 1.6.3 x86_64 hpack-0.20.0
+
+            $ stack ghc -- --version                                                                                                                                                          dktn@DktnMBP 2:49:28AM
+            The Glorious Glasgow Haskell Compilation System, version 8.2.2
+					</code></pre>
+				</section>
+
+				<section>
+          <h2>Haskell</h2>
+          <ul>
+            <li>
+              <h3>Functions</h3>
+            </li>
+            <li>
+              <h3>Types</h3>
+              <ul>
+                <li>type signatures</li>
+                <li>algebraic datatypes (ADTs)</li>
+                <li>newtypes, type aliases</li>
+              </ul>
+            </li>
+            <li>
+              <h3>Classes</h3>
+              <ul>
+                <li>instances</li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <pre><code class="Haskell" data-trim data-noescape>
+$ ghci
+<span class="fragment">λ :t "abc"</span>
+<span class="fragment">"abc" :: [Char]</span>
+<span class="fragment">λ :t \x -> x</span>
+<span class="fragment">\x -> x :: p -> p</span>
+<span class="fragment">λ :t \x y -> x + y</span>
+<span class="fragment">\x y -> x + y :: Num a => a -> a -> a</span>
+<span class="fragment">λ let f x = x + 5
+λ :t f</span>
+<span class="fragment">f :: Num a => a -> a</span>
+<span class="fragment">λ :i String</span>
+<span class="fragment">type String = [Char]    -- Defined in ‘GHC.Base’</span>
+<span class="fragment">λ :k String</span>
+<span class="fragment">String :: *
+          </span>
+          </code></pre>
+
+        <span class="fragment">
+           <pre><code class="shell" data-trim data-noescape>
+
+:load   (:l)
+:reload (:r)
+:type   (:t)
+:kind   (:k)
+:info   (:i)
+:quit   (:q)
+:help   (:h, :?)
+:browse
+:show bindings
+          </code></pre>
+          </span>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+λ :i Int
+          </code></pre>
+
+        <span class="fragment">
+           <pre><code class="haskell" data-trim data-noescape>
+data Int = GHC.Types.I# GHC.Prim.Int#   -- Defined in ‘GHC.Types’
+instance Eq Int -- Defined in ‘GHC.Classes’
+instance Ord Int -- Defined in ‘GHC.Classes’
+instance Show Int -- Defined in ‘GHC.Show’
+instance Read Int -- Defined in ‘GHC.Read’
+instance Enum Int -- Defined in ‘GHC.Enum’
+instance Num Int -- Defined in ‘GHC.Num’
+instance Real Int -- Defined in ‘GHC.Real’
+instance Bounded Int -- Defined in ‘GHC.Enum’
+instance Integral Int -- Defined in ‘GHC.Real’
+          </code></pre>
+          </span>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+λ :i Num
+          </code></pre>
+
+        <span class="fragment">
+           <pre><code class="haskell" data-trim data-noescape>
+class Num a where
+  (+) :: a -> a -> a
+  (-) :: a -> a -> a
+  (*) :: a -> a -> a
+  negate :: a -> a
+  abs :: a -> a
+  signum :: a -> a
+  fromInteger :: Integer -> a
+  {-# MINIMAL (+), (*), abs, signum, fromInteger, (negate | (-)) #-}
+        -- Defined in ‘GHC.Num’
+instance Num Word -- Defined in ‘GHC.Num’
+instance Num Integer -- Defined in ‘GHC.Num’
+instance Num Int -- Defined in ‘GHC.Num’
+instance Num Float -- Defined in ‘GHC.Float’
+instance Num Double -- Defined in ‘GHC.Float’
+          </code></pre>
+          </span>
+        </section>
+
+        <section>
+          https://www.haskell.org/hoogle/
+            <img src="img/hoogle-string.png">
+        </section>
+
+        <section>
+            <img src="img/hoogle-by-signature.png">
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+class Monoid a where
+  mempty :: a
+  mappend :: a -> a -> a
+  mconcat :: [a] -> a
+  {-# MINIMAL mempty, mappend #-}
+        -- Defined in ‘GHC.Base’
+instance Monoid [a] -- Defined in ‘GHC.Base’
+instance Monoid Ordering -- Defined in ‘GHC.Base’
+instance Monoid a => Monoid (Maybe a) -- Defined in ‘GHC.Base’
+instance Monoid a => Monoid (IO a) -- Defined in ‘GHC.Base’
+instance Monoid b => Monoid (a -> b) -- Defined in ‘GHC.Base’
+-- ...
+instance Monoid () -- Defined in ‘GHC.Base’
+          </code></pre>
+
+        <span class="fragment">
+           <pre><code class="haskell" data-trim data-noescape>
+   instance Monoid [a] where
+        {-# INLINE mempty #-}
+        mempty  = []
+        {-# INLINE mappend #-}
+        mappend = (++)
+        {-# INLINE mconcat #-}
+        mconcat xss = [x | xs <- xss, x <- xs]
+          </code></pre>
+          </span>
+        </section>
+
+        <section>
+          Algebraic Data Types (ADT)
+          <pre><code class="haskell" data-trim data-noescape>
+data Bool = True | False
+
+data Ordering = LT | EQ | GT
+
+data Maybe a = Nothing | Just a  -- parametric polymorphism
+
+data Either a b = Left a | Right b
+
+data List a = Nil | Cons a (List a)  -- recursion
+
+data Tree a = Empty
+            | Node a (Tree a) (Tree a)
+          </span>
+          </code></pre>
+        <span class="fragment">
+          <pre><code class="haskell" data-trim data-noescape>
+λ let a = Just 7
+λ let b = Cons "a" (Cons "b" Nil)
+λ let c = Node 'a' (Node 'b' Nil (Node 'c')) Nil
+λ 7 /= 3
+?
+λ :t 7 /= 3
+?
+λ compare 7 3
+?
+λ :t compare 7 3
+?
+          </code></pre>
+          </span>
+        </section>
+
+        <section>
+          Algebraic Data Types (ADT)
+          <pre><code class="haskell" data-trim data-noescape>
+data Bool = True | False
+     deriving (Bounded, Enum, Eq, Ord, Read, Show)
+     -- automatic instances deriving
+
+data Month = January | February | March
+           | April   | May      | June
+           | July    | August   | September
+           | October | November | December
+           deriving (Show, Eq, Ord)
+
+data Person = Person { firstName :: String
+                     , lastName  :: String
+                     , age       :: Int
+                     } deriving (Show, Eq, Ord)
+          </span>
+          </code></pre>
+        <span class="fragment">
+          <pre><code class="haskell" data-trim data-noescape>
+λ :t firstName
+firstName :: Person -> String
+λ :t age
+age :: Person -> Int
+          </code></pre>
+          </span>
+        </section>
+
+        <section>
+          Newtype wrappers, type synonyms
+          <pre><code class="haskell" data-trim data-noescape>
+newtype Age   = Age     Int
+newtype Money = MkMoney Int
+
+newtype Size  = Size { size :: Int }
+     -- another convention: "fromSize"
+
+type IntList    = [Int]
+type StringTree = Tree String
+          </span>
+          </code></pre>
+        <span class="fragment">
+          <pre><code class="haskell" data-trim data-noescape>
+$ ghci                                                                                                                                                                                                               0646519 dktn@DktnMBP 10:44:49pm
+λ let a = Age 7
+λ let b = MkMoney 8
+λ :t a
+?
+λ :t b
+?
+λ a == b
+?
+          </code></pre>
+          </span>
+
+        <span class="fragment">
+          <pre><code class="shell" data-trim data-noescape>
+a :: Age
+b :: Money
+
+    • Couldn't match expected type ‘Age’ with actual type ‘Money’
+          </code></pre>
+          </span>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+-- save in HelloWorld.hs
+
+module HelloWorld where
+
+main :: IO ()
+main = putStrLn "Hello World!"
+          </span>
+          </code></pre>
+
+        <span class="fragment">
+          <pre><code class="shell" data-trim data-noescape>
+$ ghci                                                                                                                                                                                                               0646519 dktn@DktnMBP 10:44:49pm
+GHCi, version 8.2.2: http://www.haskell.org/ghc/  :? for help
+Loaded GHCi configuration from /Users/dktn/.dot/.ghci
+λ :l HelloWorld.hs
+[1 of 1] Compiling Main     ( HelloWorld.hs, interpreted )
+Ok, one module loaded.
+λ main
+Hello World!
+          </code></pre>
+          </span>
+
+<span class="fragment">
+          <pre><code class="shell" data-trim data-noescape>
+$ cat ~/.dot/.ghci                                                                                                                                                                                                   0646519 dktn@DktnMBP 10:45:23pm
+:set prompt "\ESC[36mλ \ESC[m"
+          </code></pre>
+          </span>
+        </section>
+
+
+        <section>
+          <pre><code class="shell" data-trim data-noescape>
+$ runghc HelloWorld.hs                                                                                                                                                                                               0646519 dktn@DktnMBP 10:54:41pm
+Hello World!
+
+$ stack runghc HelloWorld.hs                                                                                                                                                                                         0646519 dktn@DktnMBP 10:54:45pm
+Hello World!
+          </code></pre>
+
+<span class="fragment">
+          <pre><code class="haskell" data-trim data-noescape>
+module HelloWorld where
+
+main :: IO ()
+main = do
+  putStrLn "Hello World!"
+  putStrLn "Bye."
+          </code></pre>
+          </span>
+
+<span class="fragment">
+          <pre><code class="shell" data-trim data-noescape>
+λ :l HelloWorld.hs
+[1 of 1] Compiling HelloWorld   ( HelloWorld.hs, interpreted )
+Ok, one module loaded.
+λ :r
+[1 of 1] Compiling HelloWorld   ( HelloWorld.hs, interpreted )
+Ok, one module loaded.
+          </code></pre>
+          </span>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+-- using let ... in
+quicksort :: Ord a => [a] -> [a]
+quicksort []     = []
+quicksort (x:xs) =
+    let smaller = quicksort [a | a <- xs, a <= x]
+        larger  = quicksort [a | a <- xs, a >  x]
+    in  smaller ++ [x] ++ larger
+          </code></pre>
+
+          <span class="fragment">
+          <pre><code class="haskell" data-trim data-noescape>
+-- using where
+quicksort :: Ord a => [a] -> [a]
+quicksort []     = []
+quicksort (x:xs) = smaller ++ [x] ++ larger
+  where
+    smaller = quicksort [a | a <- xs, a <= x]
+    larger  = quicksort [a | a <- xs, a >  x]
+          </code></pre>
+          </span>
+          <span class="fragment">
+          <pre><code class="haskell" data-trim data-noescape>
+λ quicksort [ 1, 4, 2, 3, 8 ]
+[1,2,3,4,8]
+λ quicksort [ "c", "a", "b" ]
+["a","b","c"]
+          </code></pre>
+          </span>
+        </section>
+
+        <section data-markdown>
+- function definition
+- type signature
+- polymorphism
+- pattern matching
+- let and where clauses
+- laziness
+- list concatenation
+- list comprehension
+          </code></pre>
+        </section>
+
+        <section>
+          <p>Task</p>
+          <pre><code class="haskell" data-trim data-noescape>
+max' :: Ord a => a -> a -> a
+max' a b                 -- TODO
+
+if condition             -- if expression
+    then expressionIfTrue
+    else expressionIfFalse
+
+fun arg1 arg2            -- guards
+    | cond1     = expr1
+    | cond2     = expr2
+    | otherwise = expr3  -- otherwise is a synonym to True
+          </code></pre>
+          <span class="fragment">
+              <pre><code class="haskell" data-trim data-noescape>
+max' :: Ord a => a -> a -> a
+max' a b =
+  if a >= b
+    then a
+    else b
+
+max'' :: Ord a => a -> a -> a
+max'' a b
+    | a >= b    = a
+    | otherwise = b
+
+              </code></pre>
+          </span>
+        </section>
+
+        <section>
+          <p>Maximum</p>
+          <p><small>(guards, if expression, order of patterns, totality)</small></p>
+          <pre><code class="haskell" data-trim data-noescape>
+maximum' :: Ord a => [a] -> a
+maximum' []   = error "why?"
+maximum' [x]  = x
+maximum' (x:xs)
+    | x > tailMaximum = x
+    | otherwise = tailMaximum
+    where tailMaximum = maximum' xs
+          </code></pre>
+          <span class="fragment">
+              <pre><code class="haskell" data-trim data-noescape>
+maximum'' :: Ord a => [a] -> a
+maximum'' []   = error "Empty list!"
+maximum'' [x]  = x
+maximum'' (x:xs) =
+    if x > tailMaximum
+        then x
+        else tailMaximum
+    where tailMaximum = maximum'' xs
+              </code></pre>
+          </span>
+        </section>
+
+        <section>
+          Task - make it total
+           <pre><code class="haskell" data-trim data-noescape>
+maximumTotal :: Ord a => [a] -> Maybe a
+maximumTotal []   = undefined
+maximumTotal [x]  = undefined
+maximumTotal (x:xs)
+    | ???? > tailMaximum = undefined
+    | otherwise          = undefined
+    where tailMaximum = maximumTotal xs
+           </code></pre>
+
+           <pre><code class="haskell" data-trim data-noescape>
+data Maybe a = Nothing | Just a
+           </code></pre>
+
+          <span class="fragment">
+              <pre><code class="haskell" data-trim data-noescape>
+maximumTotal :: Ord a => [a] -> Maybe a
+maximumTotal []   = Nothing
+maximumTotal [x]  = Just x
+maximumTotal (x:xs)
+    | Just x > tailMaximum = Just x
+    | otherwise       = tailMaximum
+    where tailMaximum = maximumTotal xs
+              </code></pre>
+          </span>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+λ 3 * 4
+12
+λ 3 + 4
+7
+λ True && False
+False
+λ True && True
+True
+λ False || True
+True
+λ not False
+True
+λ "Hello " ++ "world!"
+"Hello world!"
+          </code></pre>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+λ import Data.Monoid
+
+λ :i Monoid
+class Monoid a where
+  mempty :: a
+  mappend :: a -> a -> a
+  mconcat :: [a] -> a
+          </code></pre>
+
+          <span class="fragment">
+          <pre><code class="haskell" data-trim data-noescape>
+infixr 6 <>
+
+-- | An infix synonym for 'mappend'.
+--
+-- @since 4.5.0.0
+(<>) :: Monoid m => m -> m -> m
+(<>) = mappend
+          </code></pre>
+          </span>
+
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+λ "Hello " ++ "world!"
+"Hello world!"
+λ "Hello " <> "world!"
+"Hello world!"
+λ (<>) "Hello " "world!"
+"Hello world!"
+λ "Hello " `mappend` "world!"
+"Hello world!"
+          </code></pre>
+
+          <span class="fragment">
+          <pre><code class="haskell" data-trim data-noescape>
+λ :i (<>)
+(<>) :: Monoid m => m -> m -> m  -- Defined in ‘Data.Monoid’
+infixr 6 <>
+λ :i (++)
+(++) :: [a] -> [a] -> [a]        -- Defined in ‘GHC.Base’
+infixr 5 ++
+          </code></pre>
+          </span>
+          <span class="fragment">
+          <pre><code class="shell" data-trim data-noescape>
+λ True <> False
+
+    • No instance for (Monoid Bool) arising from a use of ‘<>’
+          </code></pre>
+          </span>
+          <span class="fragment">
+          Why?
+          </span>
+
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+instance Num a => Monoid (Sum a) -- Defined in ‘Data.Monoid’
+instance Num a => Monoid (Product a) -- Defined in ‘Data.Monoid’
+instance Monoid Any -- Defined in ‘Data.Monoid’
+instance Monoid All -- Defined in ‘Data.Monoid’
+instance Monoid [a] -- Defined in ‘GHC.Base’
+instance Monoid Ordering -- Defined in ‘GHC.Base’
+instance Monoid a => Monoid (Maybe a) -- Defined in ‘GHC.Base’
+          </code></pre>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+λ let boolList = [ True, True, False ]
+λ mconcat boolList
+</code><code class="shell">
+<interactive>:53:1: error:
+    • No instance for (Monoid Bool) arising from a use of ‘mconcat’
+    • In the expression: mconcat boolList
+      In an equation for ‘it’: it = mconcat boolList</code>
+<code class="haskell" data-trim data-noescape>λ :i Any
+newtype Any = Any {getAny :: Bool}  -- Defined in ‘Data.Monoid’
+                      -- Boolean monoid under disjunction (||)
+λ :i All
+newtype All = All {getAll :: Bool}  -- Defined in ‘Data.Monoid’
+                      -- Boolean monoid under conjunction (&&)
+λ :t map
+map :: (a -> b) -> [a] -> [b]
+          </code></pre>
+
+          <span class="fragment">
+          <pre><code class="haskell" data-trim data-noescape>
+λ map Any l
+[Any {getAny = True},Any {getAny = True},Any {getAny = False}]
+          </code></pre>
+          </span>
+
+          <span class="fragment">
+          <pre><code class="haskell" data-trim data-noescape>
+λ mconcat $ map Any boolList
+Any {getAny = True}
+λ mconcat $ map All boolList
+All {getAll = False}
+          </code></pre>
+          </span>
+
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+λ Sum 5 <> Sum 6 <> Sum 8
+Sum {getSum = 19}
+λ mconcat $ map Sum [5, 6, 8]
+Sum {getSum = 19}
+          </code></pre>
+
+          <span class="fragment">
+          <pre><code class="haskell" data-trim data-noescape>
+λ Product 5 <> Product 6 <> Product 8
+Product {getProduct = 240}
+λ mconcat $ map Product [5, 6, 8]
+Product {getProduct = 240}
+          </code></pre>
+          </span>
+
+          <span class="fragment">
+          <pre><code class="haskell" data-trim data-noescape>
+λ mempty :: Any
+Any {getAny = False}
+λ mempty :: All
+All {getAll = True}
+          </code></pre>
+          </span>
+
+          <span class="fragment">
+          <pre><code class="haskell" data-trim data-noescape>
+λ mempty :: Num a => Product a
+Product {getProduct = 1}
+λ mempty :: Num a => Sum a
+Sum {getSum = 0}
+          </code></pre>
+          </span>
+
+          <span class="fragment">
+          <pre><code class="haskell" data-trim data-noescape>
+λ mconcat [ EQ, EQ, LT, EQ ]
+LT
+          </code></pre>
+          </span>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+λ Sum 5 <> Sum 6 <> Sum 8
+Sum {getSum = 19}
+λ getSum $ Sum 5 <> Sum 6 <> Sum 8
+19
+λ getSum . mconcat $ map Sum [5, 6, 8]
+19
+          </code></pre>
+
+          <span class="fragment">
+          <pre><code class="haskell" data-trim data-noescape>
+λ :i ($)
+($) :: (a -> b) -> a -> b
+infixr 0 $
+λ :i (.)
+(.) :: (b -> c) -> (a -> b) -> a -> c
+infixr 9 .
+          </code></pre>
+          </span>
+          <span class="fragment">
+          <pre><code class="haskell" data-trim data-noescape>
+($) :: (a -> b) -> (a -> b)
+(.) :: (b -> c) -> (a -> b) -> (a -> c)
+          </code></pre>
+          </span>
+
+          <span class="fragment">
+          <pre><code class="haskell" data-trim data-noescape>
+λ appEndo (Endo (+ 2) <> Endo (* 3) <> Endo (+ (-1))) 8
+23
+λ import Data.Function
+λ 8 & appEndo (mconcat $ map Endo [(+ 2), (* 3), (+ (-1))])
+23
+          </code></pre>
+          </span>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+-- | Monoid under addition.
+newtype Sum a = Sum { getSum :: a }
+
+-- | Monoid under multiplication.
+newtype Product a = Product { getProduct :: a }
+
+instance Num a => Monoid (Sum a) where
+    mempty                = Sum 0
+    Sum x `mappend` Sum y = Sum (x + y)
+
+instance Num a => Monoid (Product a) where
+    mempty                        = Product 1
+    Product x `mappend` Product y = Product (x * y)
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>First class citizen</h2>
+          <p>In programming language design, a <strong>first-class citizen</strong> (also type, object, entity, or value)
+          in a given programming language is an entity which
+          supports all the operations generally available to other entities. These operations typically include being passed as an argument,
+          returned from a function, and assigned to a variable.</p>
+          <p><strong>Functions</strong> are first class citizens in Haskell.</p>
+          <p><strong>Currying</strong> is implicit. Curried functions are more natural.</p>
+        </section>
+
+        <section>
+            <h2>Currying</h2>
+            <p>Currying is the technique of translating the evaluation of a function that takes multiple arguments
+            (or a tuple of arguments) into evaluating a sequence of functions, each with a single argument. Currying is related to, but not the same as,
+              partial application.</p>
+            <pre><code class="Haskell" data-trim data-noescape>
+f :: (a, b) -> c
+g :: a -> b -> c
+            </code></pre>
+            <pre><code class="Haskell" data-trim data-noescape>
+λ :t curry
+curry :: ((a, b) -> c) -> a -> b -> c
+λ :t uncurry
+uncurry :: (a -> b -> c) -> (a, b) -> c
+            </code></pre>
+            <pre><code class="Haskell" data-trim data-noescape>
+curry   :: ((a, b) -> c) -> (a -> b -> c)
+uncurry :: (a -> b -> c) -> ((a, b) -> c)
+            </code></pre>
+        </section>
+
+
+    <section>
+        <h2>Currying</h2>
+        <pre><code class="haskell" data-trim data-noescape>
+λ :t curry
+curry :: ((a, b) -> c) -> a -> b -> c
+λ :t uncurry
+uncurry :: (a -> b -> c) -> (a, b) -> c
+          </code></pre>
+          <pre><code class="haskell" data-trim data-noescape>
+λ take 3 [1,2,3,4,5]
+[1,2,3]
+          </code></pre>
+          <pre><code class="haskell" data-trim data-noescape>
+λ :t take
+take :: Int -> [a] -> [a]
+
+λ :t take 3
+?
+          </code></pre>
+
+          <span class="fragment">
+          <pre><code class="haskell" data-trim data-noescape>
+λ :t take 3
+take 3 :: [a] -> [a]
+          </code></pre>
+          <pre><code class="haskell" data-trim data-noescape>
+λ :t take 3 [1,2,3,4,5]
+take 3 [1,2,3,4,5] :: Num a => [a]
+          </code></pre>
+          </span>
+    </section>
+
+    <section>
+        <h2>Kinds</h2>
+        <pre><code class="haskell" data-trim data-noescape>
+newtype Name = Name String
+newtype Identity a = Identity a
+newtype State s a = State { runState :: s -> (s, a) }</code></pre>
+
+        <span class="fragment">
+        <pre><code class="haskell" data-trim data-noescape>
+λ :t Name
+          <span class="fragment">
+Name :: String -> Name
+          </span>
+        </code></pre>
+        </span>
+
+        <span class="fragment">
+        <pre><code class="haskell" data-trim data-noescape>
+λ :k Name
+          <span class="fragment">
+Name :: *
+          </span>
+        </code></pre>
+        </span>
+
+        <span class="fragment">
+        <pre><code class="haskell" data-trim data-noescape>
+λ :t Identity
+          <span class="fragment">
+Identity :: a -> Identity a
+          </span>
+        </code></pre>
+        </span>
+
+        <span class="fragment">
+        <pre><code class="haskell" data-trim data-noescape>
+λ :k Identity
+          <span class="fragment">
+Identity :: * -> *
+          </span>
+        </code></pre>
+        </span>
+    </section>
+
+    <section>
+        <h2>Kinds</h2>
+
+        <pre><code class="haskell" data-trim data-noescape>
+newtype Name = Name String
+newtype Identity a = Identity a
+newtype State s a = State { runState :: s -> (s, a) }
+        </code></pre>
+
+        <span class="fragment">
+        <pre><code class="haskell" data-trim data-noescape>
+λ :t State
+          <span class="fragment">
+State :: (s -> (s, a)) -> State s a
+          </span>
+        </code></pre>
+        </span>
+
+        <span class="fragment">
+        <pre><code class="haskell" data-trim data-noescape>
+λ :k State
+          <span class="fragment">
+State :: * -> * -> *
+          </span>
+        </code></pre>
+        </span>
+
+        <span class="fragment">
+        <pre><code class="haskell" data-trim data-noescape>
+λ :i (->)
+          <span class="fragment">
+data (->) t1 t2
+          </span>
+        </code></pre>
+        </span>
+
+        <span class="fragment">
+        <pre><code class="haskell" data-trim data-noescape>
+λ :k (->)
+          <span class="fragment">
+(->) :: * -> * -> *
+          </span>
+        </code></pre>
+        </span>
+    </section>
+
+    <section>
+        <h2>Algebraic data types</h2>
+        <p>In computer programming, more so functional programming and type theory, an algebraic data type is a kind
+             of <strong>composite</strong> type, i.e., a type formed by combining other types.</p>
+             <p>Two common classes of algebraic types are <strong>product types</strong> (i.e., tuples and records)
+                 and <strong>sum types</strong>, also called tagged or disjoint unions or variant types.</p>
+    </section>
+
+    <section>
+        <pre><code class="haskell" data-trim data-noescape>
+data []   a = []  | a :    [a]       -- built-in
+
+data List a = Nil | Cons a (List a)  -- note recursion!
+        </code></pre>
+        <pre><code class="haskell" data-trim data-noescape>
+data Tree = Empty
+          | Leaf Int
+          | Node Tree Tree
+          deriving (Show, Eq)
+
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>Algebraic data types</h2>
+        <pre><code class="haskell" data-trim data-noescape>
+data Tree a = Empty
+            | Leaf a
+            | Node Tree Tree
+            deriving (Show, Eq)
+
+          </code></pre>
+
+        <pre><code class="haskell" data-trim data-noescape>
+tree :: Tree Int
+tree = Node
+            (Node
+                (Leaf 3)
+                (Leaf 8)
+            )
+            (Node
+                (Node
+                    (Leaf 1)
+                    (Node
+                        (Leaf 4)
+                        (Leaf 2)
+                    )
+                )
+                (Leaf 9)
+            )
+
+          </code></pre>
+    </section>
+
+    <section>
+        <h2>Algebraic data types</h2>
+        <pre><code class="haskell" data-trim data-noescape>
+data Tree = Leaf
+    | Node Tree Tree
+    deriving (Show, Eq)
+
+  </code></pre>
+
+      <pre><code class="haskell" data-trim data-noescape>
+longestBranch :: Tree -> Int
+<span class="fragment">longestBranch Leaf         = 0
+longestBranch (Node b1 b2) =
+    1 + max (longestBranch b1) (longestBranch b2)
+        </span>
+shortestBranch :: Tree -> Int
+<span class="fragment">shortestBranch Leaf         = 0
+shortestBranch (Node b1 b2) =
+    1 + min (shortestBranch b1) (shortestBranch b2)
+        </span>
+isSubtree :: Tree -> Tree -> Bool
+<span class="fragment">isSubtree Leaf       Leaf    = True
+isSubtree (Node _ _) Leaf    = False
+isSubtree t1 t2@(Node b1 b2) =
+    t1 == t2 || isSubtree t1 b1 || isSubtree t1 b2
+        </span>
+      </code></pre>
+    </section>
+
+    <section>
+        <h2>Basic functional building blocks</h2>
+        <pre><code class="haskell" data-trim data-noescape>
+λ const (+) 1 2 3
+λ const 1 (+)
+ -- what are the results?
+        </code></pre>
+        <pre><code class="haskell" data-trim data-noescape>
+λ :t const
+const :: a -> b -> a
+        </code></pre>
+<span class="fragment">
+        <pre><code class="haskell" data-trim data-noescape>
+λ const (+) 1 2 3
+5
+
+λ const 1 (+)
+1
+</span>
+        </code></pre>
+
+<span class="fragment">
+        <pre><code class="haskell" data-trim data-noescape>
+λ :t id
+id :: a -> a
+        </code></pre>
+        <pre><code class="haskell" data-trim data-noescape>
+λ id 8
+8
+</span>
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>Basic functional building blocks</h2>
+        <pre><code class="haskell" data-trim data-noescape>
+λ :t ($) -- what does it do?
+<span class="fragment">
+($) :: (a -> b) -> a -> b
+</span>
+        </code></pre>
+
+<span class="fragment">
+        <pre><code class="haskell" data-trim data-noescape>
+λ ($) (++ "!") "Hello" -- what is the result?
+        </code></pre>
+        <pre><code class="haskell" data-trim data-noescape>
+λ :t (++ "!")
+(++ "!") :: [Char] -> [Char]
+        </code></pre>
+        <pre><code class="haskell" data-trim data-noescape>
+λ :t (.) -- what does it do?
+<span class="fragment">
+(.) :: (b -> c) -> (a -> b) -> a -> c
+</span>
+        </code></pre>
+<span class="fragment">
+        <pre><code class="haskell" data-trim data-noescape>
+λ (+ 2) . (* 2) $ 3 -- what is the result?
+        </code></pre>
+</span>
+    </section>
+
+    <section>
+        <h2>Basic functional building blocks</h2>
+        <pre><code class="haskell" data-trim data-noescape>
+f :: (a -> b -> c) -> b -> a -> c
+g :: Int -> a -> [a]
+h :: a -> [a]
+i :: (a -> b) -> [a] -> [b]
+j :: (a -> b -> c) -> [a] -> [b] -> [c]
+k :: [a] -> [b] -> [(a, b)]
+l :: a -> b -> (a, b)
+m :: (b -> a -> b) -> b -> [a] -> b
+        </code></pre>
+<span class="fragment">
+        <pre><code class="haskell" data-trim data-noescape>
+λ :t flip
+flip :: (a -> b -> c) -> b -> a -> c
+        </code></pre>
+        <pre><code class="haskell" data-trim data-noescape>
+λ :t replicate
+replicate :: Int -> a -> [a]
+        </code></pre>
+        <pre><code class="haskell" data-trim data-noescape>
+λ :t repeat
+repeat :: a -> [a]
+        </code></pre>
+        <pre><code class="haskell" data-trim data-noescape>
+λ :t map
+map :: (a -> b) -> [a] -> [b]
+        </code></pre>
+</span>
+    </section>
+
+    <section>
+        <h2>Basic functional building blocks</h2>
+        <pre><code class="haskell" data-trim data-noescape>
+f :: (a -> b -> c) -> b -> a -> c
+g :: Int -> a -> [a]
+h :: a -> [a]
+i :: (a -> b) -> [a] -> [b]
+j :: (a -> b -> c) -> [a] -> [b] -> [c]
+k :: [a] -> [b] -> [(a, b)]
+l :: a -> b -> (a, b)
+m :: (b -> a -> b) -> b -> [a] -> b
+        </code></pre>
+<span class="fragment">
+        <pre><code class="haskell" data-trim data-noescape>
+λ :t zipWith
+zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
+        </code></pre>
+        <pre><code class="haskell" data-trim data-noescape>
+λ :t zip
+zip :: [a] -> [b] -> [(a, b)]
+        </code></pre>
+        <pre><code class="haskell" data-trim data-noescape>
+λ zip [1,2] ["a", "b"]
+[(1,"a"),(2,"b")]
+        </code></pre>
+        <pre><code class="haskell" data-trim data-noescape>
+λ :t (,)
+(,) :: a -> b -> (a, b)
+        </code></pre>
+        <pre><code class="haskell" data-trim data-noescape>
+λ let myZip = zipWith (,)
+        </code></pre>
+</span>
+    </section>
+
+    <section>
+        <h2>Basic functional building blocks</h2>
+        <pre><code class="haskell" data-trim data-noescape>
+λ :t map
+map :: (a -> b) -> [a] -> [b]
+        </code></pre>
+        <pre><code class="haskell" data-trim data-noescape>
+λ :t fmap
+fmap :: Functor f => (a -> b) -> f a -> f b
+        </code></pre>
+        <pre><code class="haskell" data-trim data-noescape>
+λ :t foldl
+foldl :: Foldable t => (b -> a -> b) -> b -> t a -> b
+-- task: write functions all, any, sum, product...
+        </code></pre>
+        <pre><code class="haskell" data-trim data-noescape>
+λ :t foldr
+foldr :: Foldable t => (a -> b -> b) -> b -> t a -> b
+        </code></pre>
+    </section>
+
+				<section>
+          <h2>Category theory typeclasses</h2>
+          <ul>
+            <li>Monoid</li>
+            <li>Functor</li>
+            <li>Applicative functor</li>
+            <li>Monad</li>
+          </ul>
+        </section>
+
+    <section>
+        <h2>Category theory type classes</h2>
+        <pre><code class="haskell" data-trim data-noescape>
+λ :set -XDeriveFunctor
+λ data Tree a = Leaf a | Node (Tree a) (Tree a)
+     deriving (Show, Eq, Functor)
+λ let tree = Node (Leaf 1) (Leaf 3)
+λ fmap (flip replicate '!') tree -- what it will do?
+        </code></pre>
+<span class="fragment">
+        <pre><code class="haskell" data-trim data-noescape>
+Node (Leaf "!") (Leaf "!!!")
+        </code></pre>
+</span>
+        <pre><code class="haskell" data-trim data-noescape>
+λ :i Functor
+class Functor (f :: * -> *) where
+  fmap :: (a -> b) -> f a -> f b
+  (<$) :: a -> f b -> f a
+  {-# MINIMAL fmap #-} -- Defined in ‘GHC.Base’
+instance [safe] Functor Tree -- Defined at &lt;interactive&gt;:105:67
+instance Functor (Either a) -- Defined in ‘Data.Either’
+instance Functor [] -- Defined in ‘GHC.Base’
+instance Functor Maybe -- Defined in ‘GHC.Base’
+instance Functor IO -- Defined in ‘GHC.Base’
+instance Functor ((->) r) -- Defined in ‘GHC.Base’
+instance Functor ((,) a) -- Defined in ‘GHC.Base’
+        </code></pre>
+        <pre><code class="haskell" data-trim data-noescape>
+λ (flip replicate '!') <$> tree
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>Category theory type classes</h2>
+        <pre><code class="haskell" data-trim data-noescape>
+class Functor f where
+  fmap :: (a -> b) -> f a -> f b
+
+  (<$) :: b        -> f a -> f b
+  (<$) = fmap . const
+
+(<$>) :: Functor f => (a -> b) -> f a -> f b
+(<$>) = fmap
+infixl 4 <$>
+        </code></pre>
+        <pre><code class="haskell" data-trim data-noescape>
+λ :t const
+const :: a -> b -> a
+        </code></pre>
+        <pre><code class="haskell" data-trim data-noescape>
+λ 42 <$ tree -- ?
+        </code></pre>
+<span class="fragment">
+        <pre><code class="haskell" data-trim data-noescape>
+Node (Leaf 42) (Leaf 42)
+        </code></pre>
+</span>
+    </section>
+    <section>
+        <h2>Category theory type classes</h2>
+        <pre><code class="haskell" data-trim data-noescape>
+instance Functor [] where
+<span class="fragment">  fmap _ []     = []
+<span class="fragment">  fmap g (x:xs) = g x : fmap g xs
+</span></span>
+instance Functor Maybe where
+<span class="fragment">  fmap _ Nothing  = Nothing
+<span class="fragment">  fmap g (Just a) = Just (g a)
+</span></span>
+          </code></pre>
+        <pre><code class="haskell" data-trim data-noescape>
+λ :i []
+data [] a = [] | a : [a]
+
+λ :i Maybe
+data Maybe a = Nothing | Just a
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>Category theory type classes</h2>
+        <pre><code class="haskell" data-trim data-noescape>
+λ :i Applicative
+class Functor f => Applicative (f :: * -> *) where
+  pure :: a -> f a
+  (<*>) :: f (a -> b) -> f a -> f b
+  (*>) :: f a -> f b -> f b
+  (<*) :: f a -> f b -> f a
+  {-# MINIMAL pure, (<*>) #-} -- Defined in ‘GHC.Base’
+instance Applicative (Either e) -- Defined in ‘Data.Either’
+instance Applicative [] -- Defined in ‘GHC.Base’
+instance Applicative Maybe -- Defined in ‘GHC.Base’
+instance Applicative IO -- Defined in ‘GHC.Base’
+instance Applicative ((->) a) -- Defined in ‘GHC.Base’
+instance Monoid a => Applicative ((,) a) -- Defined in ‘GHC.Base’
+</code></pre>
+    </section>
+
+    <section>
+        <h2>Category theory type classes</h2>
+        <pre><code class="haskell" data-trim data-noescape>
+λ :i Monad
+class Applicative m => Monad (m :: * -> *) where
+  (>>=) :: m a -> (a -> m b) -> m b
+  (>>) :: m a -> m b -> m b
+  return :: a -> m a
+  fail :: String -> m a
+  {-# MINIMAL (>>=) #-} -- Defined in ‘GHC.Base’
+instance Monad (Either e) -- Defined in ‘Data.Either’
+instance Monad [] -- Defined in ‘GHC.Base’
+instance Monad Maybe -- Defined in ‘GHC.Base’
+instance Monad IO -- Defined in ‘GHC.Base’
+instance Monad ((->) r) -- Defined in ‘GHC.Base’
+instance Monoid a => Monad ((,) a) -- Defined in ‘GHC.Base’
+</code></pre>
+    </section>
+
+    <section>
+        <h2>Category theory type classes</h2>
+        <pre><code class="haskell" data-trim data-noescape>
+λ :i Monoid
+class Monoid a where
+  mempty :: a
+  mappend :: a -> a -> a
+  mconcat :: [a] -> a
+  {-# MINIMAL mempty, mappend #-} -- Defined in ‘GHC.Base’
+instance Monoid [a] -- Defined in ‘GHC.Base’
+instance Monoid Ordering -- Defined in ‘GHC.Base’
+instance Monoid a => Monoid (Maybe a) -- Defined in ‘GHC.Base’
+instance Monoid a => Monoid (IO a) -- Defined in ‘GHC.Base’
+instance Monoid b => Monoid (a -> b) -- Defined in ‘GHC.Base’
+instance (Monoid a, Monoid b, Monoid c, Monoid d) => Monoid (a, b, c, d) -- Defined in ‘GHC.Base’
+instance (Monoid a, Monoid b, Monoid c) => Monoid (a, b, c) -- Defined in ‘GHC.Base’
+instance (Monoid a, Monoid b) => Monoid (a, b) -- Defined in ‘GHC.Base’
+instance Monoid () -- Defined in ‘GHC.Base’
+</code></pre>
+    </section>
+
+    <section>
+        <h2>Category theory type classes</h2>
+        <pre><code class="haskell" data-trim data-noescape>
+λ :i Alternative
+class Applicative f => Alternative (f :: * -> *) where
+  empty :: f a
+  (<|>) :: f a -> f a -> f a
+  some :: f a -> f [a]
+  many :: f a -> f [a]
+  {-# MINIMAL empty, (<|>) #-} -- Defined in ‘GHC.Base’
+instance MonadPlus m => Alternative (WrappedMonad m) -- Defined in ‘Control.Applicative’
+instance (Control.Arrow.ArrowZero a, Control.Arrow.ArrowPlus a) => Alternative (WrappedArrow a b)
+instance Alternative [] -- Defined in ‘GHC.Base’
+instance Alternative Maybe -- Defined in ‘GHC.Base’
+instance Alternative IO -- Defined in ‘GHC.Base’
+</code></pre>
+    </section>
+
+    <section>
+        <h2>Typeclassopedia</h2>
+        <img src="img/typeclassopedia.png" width="100%" alt="Typeclassopedia">
+    </section>
+
+    <section>
+        <h2>Laws of type classes</h2>
+        <pre><code class="haskell" data-trim data-noescape>
+-- Functor
+fmap id = id
+fmap (g . h) = (fmap g) . (fmap h)
+        </code></pre>
+        <pre><code class="haskell" data-trim data-noescape>
+-- Applicative
+pure id <*> v = v
+pure f <*> pure x = pure (f x)
+u <*> pure y = pure ($ y) <*> u
+u <*> (v <*> w) = pure (.) <*> u <*> v <*> w
+fmap g x = pure g <*> x
+        </code></pre>
+        <pre><code class="haskell" data-trim data-noescape>
+-- Monad
+return a >>= k  =  k a
+m >>= return    =  m
+m >>= (\x -> k x >>= h)  =  (m >>= k) >>= h
+        </code></pre>
+    </section>
+
+
+    <section>
+        <pre><code class="haskell" data-trim data-noescape>
+return :: a -> f a
+pure   :: a -> f a
+fmap   ::   (a -> b) -> f a -> f b
+(<$>)  ::   (a -> b) -> f a -> f b
+(<*>)  :: f (a -> b) -> f a -> f b
+(=<<)  :: (a -> f b) -> f a -> f b
+(>>=)  :: m a -> (a -> m b) -> m b
+        </code></pre>
+        <span class="fragment">
+        <pre><code class="haskell" data-trim data-noescape>
+class Monad m where
+  return :: a -> m a
+  (>=>)  :: (a -> m b) -> (b -> m c) -> (a -> m c)
+
+class Monad m where
+  return :: a -> m a
+  (>>=)  :: m a -> (a -> m b) -> m b
+
+class Functor m => Monad m where
+  return :: a -> m a
+  join   :: m (m a) -> m a
+        </code></pre>
+        </span>
+    </section>
+
+    <section>
+        <h2>Maybe monad</h2>
+        <pre><code class="haskell" data-trim data-noescape>
+instance Monad Maybe where
+  return         = Just           -- pointfree
+  (Just x) >>= k = k x
+  Nothing  >>= _ = Nothing
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>Do notation</h2>
+        <pre><code class="haskell" data-trim data-noescape>
+-- (>>)  :: IO a ->       IO b  -> IO b
+-- (>>=) :: IO a -> (a -> IO b) -> IO b
+main =
+  putStrLn "Your name?" >>
+  getLine >>=
+  \n -> putStrLn ("Hello, " ++ n)
+        </code></pre>
+        <span class="fragment">
+        <pre><code class="haskell" data-trim data-noescape>
+main = do
+  putStrLn "Your name?"
+  n <- getLine
+  putStrLn ("Hello, " ++ n)
+        </code></pre>
+        </span>
+    </section>
+
+    <section>
+        <h2>Type inference</h2>
+        <pre><code class="haskell" data-trim data-noescape>
+λ let f (x, y) = x + y
+
+λ :t f
+<span class="fragment">
+f :: Num a => (a, a) -> a
+</span>
+        </code></pre>
+        <pre><code class="haskell" data-trim data-noescape>
+λ let g (x, y) = if x > y then x + y else x / 4
+
+λ :t g
+<span class="fragment">
+g :: (Ord a, Fractional a) => (a, a) -> a
+</span>
+        </code></pre>
+        <pre><code class="haskell" data-trim data-noescape>
+λ let h f g = f . f . g -- pointfree
+
+λ :t h
+<span class="fragment">
+h :: (b -> b) -> (a -> b) -> a -> b
+</span>
+        </code></pre>
+        <pre><code class="haskell" data-trim data-noescape>
+λ h (+7) (*3) 4
+        </code></pre>
+        <pre><code class="haskell" data-trim data-noescape>
+<span class="fragment">
+26
+</span>
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>Type inference and side effects</h2>
+        <pre><code class="haskell" data-trim data-noescape>
+-- Test.hs
+test x y = do
+  let z = x + y
+  print z
+  return z
+-- do -> syntactic sugar for monadic binding: (>>=) and (>>)
+          </code></pre>
+        <pre><code class="haskell" data-trim data-noescape>
+λ let f x y = x + y
+λ :t f
+<span class="fragment">
+f :: Num a => a -> a -> a
+</span>
+        </code></pre>
+        <pre><code class="haskell" data-trim data-noescape>
+λ :l Test.hs
+λ :t test
+<span class="fragment">
+test :: (Show t, Num t) => t -> t -> IO t
+</span>
+        </code></pre>
+<span class="fragment">
+        <pre><code class="haskell" data-trim data-noescape>
+test :: Int -> Int -> IO Int -- narrow down the type
+test x y = do
+  let z = x + y
+  print z -- can't use it outside IO!
+  return z
+          </code></pre>
+</span>
+      </section>
+
+       <section>
+      <pre><code class="haskell" data-trim data-noescape>
+λ :i IO -- Defined in ‘GHC.Types’
+newtype IO a =
+  GHC.Types.IO
+    (GHC.Prim.State# GHC.Prim.RealWorld
+      -> (# GHC.Prim.State# GHC.Prim.RealWorld, a #))
+instance Monad IO -- Defined in ‘GHC.Base’
+instance Functor IO -- Defined in ‘GHC.Base’
+instance Applicative IO -- Defined in ‘GHC.Base’
+instance Monoid a => Monoid (IO a) -- Defined in ‘GHC.Base’
+        </code></pre>
+    </section>
+
+       <section>
+      <pre><code class="haskell" data-trim data-noescape>
+import Data.Char
+
+main :: IO ()
+main = do
+    putStrLn "Enter your first name"
+    firstName <- getLine
+    putStrLn "Enter your last name"
+    lastName <- getLine
+    let capitalFirstName = map toUpper firstName
+        capitalLastName  = map toUpper lastName
+    putStrLn $ "Hello " ++ capitalFirstName ++ " "
+                        ++ capitalLastName  ++ "!"
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>Simply typed lambda calculus</h2>
+        <pre><code class="haskell" data-trim data-noescape>
+λ :i (->) -- ?
+        </code></pre>
+                <pre><code class="haskell" data-trim data-noescape>
+data (->) t1 t2         -- Defined in ‘GHC.Prim’
+infixr 0 `(->)`
+instance Monad ((->) r) -- Defined in ‘GHC.Base’
+instance Functor ((->) r) -- Defined in ‘GHC.Base’
+instance Applicative ((->) a) -- Defined in ‘GHC.Base’
+instance Monoid b => Monoid (a -> b) -- Defined in ‘GHC.Base’
+        </code></pre>
+    </section>
+
+    <section>
+The simply typed lambda calculus (λ→), a form of type theory, is a typed interpretation of the lambda calculus with only one type constructor:
+→ that builds function types. It is the canonical and simplest example of a typed lambda calculus.
+The simply typed lambda calculus was originally introduced by Alonzo Church in 1940 as an attempt to avoid paradoxical
+uses of the untyped lambda calculus, and it exhibits many desirable and interesting properties.
+    </section>
+
+    <section>
+        <h2>Barendregt's Lambda Cube</h2>
+        <ul>
+            <li>Terms depending on terms, simply typed lambda calculus (λ→)</li>
+            <li>Terms depending on types, or polymorphism. <p>System F, aka second order lambda calculus (λ2)</li>
+            <li>Types depending on types, or type operators. <p>Simply typed lambda calculus with type operators (λω with underline)</li>
+            <li>Types depending on terms, or dependent types yields λΠ (λP), a type system closely related to LF</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Barendregt's Lambda Cube</h2>
+        <img src="img/lambda-cube.png" width="50%" alt="Lambda Cube">
+    </section>
+
+    <section>
+      <h2>Haskell</h2>
+          <h3>Functions</h3>
+          <ul>
+            <li>basic functions (in type classes instances)</li>
+            <li>higher-order function</li>
+            <li>type constructors (type operators)</li>
+            <li>type families</li>
+            <li>dependend types (not in full yet)</li>
+          </ul>
+    </section>
+
+    <section>
+      <ul>
+          <h3>Types</h3>
+          <ul>
+            <li>type signatures (in type classes)</li>
+            <li>algebraic datatypes (ADTs)</li>
+            <li>newtypes, type aliases</li>
+          </ul>
+          <h3>Classes</h3>
+          <ul>
+            <li>laws (not enforced)</li>
+            <li>default implementations</li>
+            <li>signatures (of functions)</li>
+            <li>instances (functions implementations for types)</li>
+            <li>automatic deriving</li>
+          </ul>
+    </section>
+
+    <section>
+      <h2>Haskell</h2>
+      <ul>
+        <li>
+          <h3>We can use type system for:</h3>
+          <ul>
+            <li>Checking if a program has the intended properties</li>
+            <li>Guiding a programmer towards a correct program</li>
+            <li>Building expressive and generic libraries</li>
+        </li>
+      </ul>
+      <p style="text-align: right">Edwin Brady (Idris author)</p>
+    </section>
+
+
+        <section>
+          Stack
+          <pre><code class="haskell" data-trim data-noescape>
+$ stack new exercises
+$ cd exercises
+$ ls -la
+$ stack setup
+$ stack clean
+$ stack build
+$ stack run exercises-exe
+$ stack exec exercises-exe
+          </code></pre>
+
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+$ stack ghci
+λ import Control.Monad.State
+λ :t get
+λ :t put
+λ :t evalState
+λ :t runState
+λ :t execState
+λ :i MonadState
+
+          </code></pre>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+λ :i StateT
+newtype StateT s (m :: * -> *) a
+  = StateT {runStateT :: s -> m (a, s)}
+            </code></pre>
+
+          <span class="fragment">
+          <pre><code class="haskell" data-trim data-noescape>
+λ :i WriterT
+newtype WriterT w (m :: * -> *) a
+  = WriterT {runWriterT :: m (a, w)}
+           </code></pre>
+          </span>
+
+          <span class="fragment">
+          <pre><code class="haskell" data-trim data-noescape>
+λ :i ReaderT
+newtype ReaderT r (m :: k -> *) (a :: k)
+  = ReaderT {runReaderT :: r -> m a}
+            </code></pre>
+          </span>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+λ import Control.Monad.State
+λ :i MonadState
+class Monad m => MonadState s (m :: * -> *) | m -> s where
+  get :: m s
+  put :: s -> m ()
+  state :: (s -> (a, s)) -> m a          </code></pre>
+
+          <span class="fragment">
+          <pre><code class="haskell" data-trim data-noescape>
+λ :i MonadWriter
+class (Monoid w, Monad m) =>
+        MonadWriter w (m :: * -> *) | m -> w where
+  writer :: (a, w) -> m a
+  tell :: w -> m ()
+  listen :: m a -> m (a, w)
+  pass :: m (a, w -> w) -> m a
+          </code></pre>
+          </span>
+
+          <span class="fragment">
+          <pre><code class="haskell" data-trim data-noescape>
+λ import Control.Monad.Reader
+λ :i MonadReader
+class Monad m => MonadReader r (m :: * -> *) | m -> r where
+  ask :: m r
+  local :: (r -> r) -> m a -> m a
+  reader :: (r -> a) -> m a
+            </code></pre>
+          </span>
+        </section>
+
+    <section>
+      <h2>The End</h2>
+    </section>
+
+
+<!-- https://github.com/mstksg/advent-of-code-2017/tree/master/src/AOC2017 -->
 			</div>
 		</div>
 
