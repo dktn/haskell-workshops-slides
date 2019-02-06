@@ -35,6 +35,7 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
+        <!-- -->
 				<section>
           <h1>Haskell Workshops</h1>
           <h3>Adam Szlachta</h3>
@@ -1313,6 +1314,14 @@ instance Monoid () -- Defined in ‘GHC.Base’
 </code></pre>
     </section>
 
+        <section>
+            <img src="img/Leibniz.jpg" width="50%">
+        </section>
+
+        <section>
+            <img src="img/monad-leibniz.png">
+        </section>
+
     <section>
         <h2>Category theory type classes</h2>
         <pre><code class="haskell" data-trim data-noescape>
@@ -1631,6 +1640,7 @@ $ stack ghci
         </section>
 
         <section>
+          <h2>Basic monads</h2>
           <pre><code class="haskell" data-trim data-noescape>
 λ :i StateT
 newtype StateT s (m :: * -> *) a
@@ -1686,6 +1696,662 @@ class Monad m => MonadReader r (m :: * -> *) | m -> r where
             </code></pre>
           </span>
         </section>
+
+        <section>
+          <h2>State monad</h2>
+          <pre><code class="haskell" data-trim data-noescape>
+evalState :: State s a -> s -> a
+evalState act = fst . runState act
+
+execState :: State s a -> s -> s
+execState act = snd . runState act
+
+newtype StateT s m a = StateT { runStateT :: s -> m (a,s) }
+
+type State s = StateT s Identity
+
+-- it's like
+newtype State s m a = State { runState :: s -> (a,s) }
+
+        </code></pre>
+        </section>
+        <section>
+          <h2>State monad</h2>
+          <pre><code class="haskell" data-trim data-noescape>
+-- Return leaves the state unchanged and sets the result:
+-- ie: (return 5) 1 -> (5,1)
+return :: a -> State s a
+return x s = (x,s)
+
+-- Get leaves state unchanged and sets the result to the state:
+-- ie:  get 1 -> (1,1)
+get :: State s s
+get s = (s,s)
+
+-- Put sets the result to () and sets the state:
+-- ie: (put 5) 1 -> ((),5)
+put :: s -> State s ()
+put x s = ((),x)
+        </code></pre>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+newtype State s a = State { runState :: s -> (a, s) }
+
+return :: a -> State s a
+return x s = (x,s)
+
+(>>=) :: State s a -> (a -> State s b) -> State s b
+p >>= k = State $ \ s0 ->
+   let (x, s1) = runState p s0  -- Running the first  processor on s0.
+   in runState (k x) s1         -- Running the second processor on s1.
+         </code></pre>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+instance (Functor m) => Functor (StateT s m) where
+    fmap f m = StateT $ \ s ->
+        fmap (\ ~(a, s') -> (f a, s')) $ runStateT m s
+    {-# INLINE fmap #-}
+
+instance (Functor m, Monad m) => Applicative (StateT s m) where
+    pure a = StateT $ \ s -> return (a, s)
+    {-# INLINE pure #-}
+    StateT mf <*> StateT mx = StateT $ \ s -> do
+        ~(f, s') <- mf s
+        ~(x, s'') <- mx s'
+        return (f x, s'')
+    {-# INLINE (<*>) #-}
+    m *> k = m >>= \_ -> k
+     </code></pre>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+-- simplified
+(>>=) :: State s a -> (a -> State s b) -> State s b
+p >>= k = State $ \ s0 ->
+   let (x, s1) = runState p s0  -- Running the first  processor on s0.
+   in runState (k x) s1         -- Running the second processor on s1.
+
+instance (Monad m) => Monad (StateT s m) where
+    return a = StateT $ \ s -> return (a, s)
+    {-# INLINE return #-}
+    m >>= k  = StateT $ \ s -> do
+        ~(a, s') <- runStateT m s
+        runStateT (k a) s'
+    {-# INLINE (>>=) #-}
+    fail str = StateT $ \ _ -> fail str
+    {-# INLINE fail #-}
+     </code></pre>
+        </section>
+
+        <section>
+            <img src="img/Banach.jpg" width="80%">
+        </section>
+
+        <section>
+            <img src="img/Poland.jpg">
+        </section>
+
+        <section>
+          <h2>Banach fixed-point theorem</h2>
+          Let f be a contraction mapping from a closed subset F of a Banach space E into F. Then there exists a unique z in F such that f(z)=z.
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+(a -> a) -> a
+            </code></pre>
+
+          <span class="fragment">
+          <pre><code class="haskell" data-trim data-noescape>
+fix :: (a -> a) -> a
+           </code></pre>
+          </span>
+
+          <span class="fragment">
+          <pre><code class="haskell" data-trim data-noescape>
+fix f = let x = f x in x
+           </code></pre>
+          </span>
+
+
+          <span class="fragment">
+          <pre><code class="haskell" data-trim data-noescape>
+Prelude> :m Control.Monad.Fix
+Prelude Control.Monad.Fix> fix (2+)
+           </code></pre>
+          </span>
+          <span class="fragment">
+          <pre><code class="haskell" data-trim data-noescape>
+*** Exception: stack overflow
+Prelude Control.Monad.Fix> fix (const "hello")
+           </code></pre>
+          </span>
+          <span class="fragment">
+          <pre><code class="haskell" data-trim data-noescape>
+"hello"
+Prelude Control.Monad.Fix> fix (1:)
+           </code></pre>
+          </span>
+          <span class="fragment">
+          <pre><code class="haskell" data-trim data-noescape>
+[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,...
+           </code></pre>
+          </span>
+
+        </section>
+
+
+        <section>
+          <h2>Babylonian method</h2>
+          <pre><code class="haskell" data-trim data-noescape>
+  -- fix f = let {x = f x} in x
+  fix (\next guess tol val -> if abs(guess^2-val) < tol
+    then guess
+    else next ((guess + val / guess) / 2.0) tol val)
+      2.0 0.0001 25.0
+= (let {next = (\next guess tol val -> if abs(guess^2-val) < tol
+      then guess
+      else next ((guess + val / guess) / 2.0) tol val) next}
+   in next) 2.0 0.0001 25.0
+= let  {next guess tol val =  if abs(guess^2-val) < tol
+    then guess
+    else next ((guess + val / guess) / 2.0) tol val}
+  in  next  2.0 0.0001 25.0
+= 5.000000000016778
+           </code></pre>
+
+        </section>
+
+
+         <section>
+          <h2>Factorial</h2>
+          <pre><code class="haskell" data-trim data-noescape>
+> let fact n = if n == 0 then 1 else n * fact (n-1) in fact 5
+120
+> fix (\rec n -> if n == 0 then 1 else n * rec (n-1)) 5
+120
+
+fact' rec n = if n == 0 then 1 else n * rec (n-1)
+
+-- fixed point
+f == fact' f
+
+f = fact' f
+  = \n -> if n == 0 then 1 else n * f (n-1)
+           </code></pre>
+
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+
+{-# LANGUAGE KindSignatures #-}
+
+-- https://downloads.haskell.org/~ghc/7.8.4/docs/html/users_guide/other-type-extensions.html
+
+data Set (cxt :: * -> *) a = Set [a]
+
+type T (f :: * -> *) = f Int
+
+class (Eq a) => C (f :: * -> *) a where ...
+
+f :: forall (cxt :: * -> *). Set cxt Int
+
+f :: (Int :: *) -> Int
+g :: forall a. a -> (a :: *)
+
+           </code></pre>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+
+{-# LANGUAGE DataKinds #-}
+
+-- https://downloads.haskell.org/~ghc/7.4.1/docs/html/users_guide/kind-polymorphism-and-promotion.html
+
+-- without
+data Ze
+data Su n
+
+data Vec :: * -> * -> * where
+  Nil  :: Vec a Ze
+  Cons :: a -> Vec a n -> Vec a (Su n)
+
+-- with
+data Nat = Ze | Su Nat
+
+data Vec :: * -> Nat -> * where
+  Nil  :: Vec a Ze
+  Cons :: a -> Vec a n -> Vec a (Su n)
+
+           </code></pre>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+
+{-# LANGUAGE PolyKinds #-}
+
+data App f a = MkApp (f a)
+
+-- infers the kind:
+forall k. (k -> *) -> k -> *
+
+Proxy Int
+Proxy []
+Proxy Either
+-- allows polymorphic types
+
+           </code></pre>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+
+{-# LANGUAGE DeriveGeneric #-}
+
+-- https://wiki.haskell.org/GHC.Generics
+-- https://hackage.haskell.org/package/base-4.9.0.0/docs/GHC-Generics.html
+-- https://downloads.haskell.org/~ghc/7.8.3/docs/html/users_guide/generic-programming.html
+
+           </code></pre>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+
+{-# LANGUAGE TypeApplications #-}
+
+-- https://downloads.haskell.org/~ghc/8.0.1/docs/html/users_guide/glasgow_exts.html#visible-type-application
+
+pair :: forall a. a -> forall b. b -> (a, b)
+
+pair @Bool True @Char
+
+Char -> (Bool, Char).
+
+           </code></pre>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+
+{-# LANGUAGE ImplicitParams #-}
+
+-- https://downloads.haskell.org/~ghc/8.0.1/docs/html/users_guide/glasgow_exts.html#implicit-parameters
+
+sortBy :: (a -> a -> Bool) -> [a] -> [a]
+
+sort :: (?cmp :: a -> a -> Bool) => [a] -> [a]
+sort = sortBy ?cmp
+
+least :: (?cmp :: a -> a -> Bool) => [a] -> a
+least xs = head (sort xs)
+
+min :: Ord a => [a] -> a
+min  = let ?cmp = (<=) in least
+
+           </code></pre>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+
+{-# LANGUAGE PartialTypeSignatures #-}
+
+-- https://downloads.haskell.org/~ghc/8.0.1/docs/html/users_guide/glasgow_exts.html#partial-type-signatures
+
+maybools :: _
+maybools = Just [True]
+-- Inferred: Maybe [Bool]
+
+           </code></pre>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+
+{-# LANGUAGE DuplicateRecordFields #-}
+
+-- https://downloads.haskell.org/~ghc/8.0.1/docs/html/users_guide/glasgow_exts.html#duplicate-record-fields
+
+data S = MkS { x :: Int }
+data T = MkT { x :: Bool }
+
+ok1 = x :: S -> Int
+
+ok2 :: S -> Int
+ok2 = x
+
+ok3 = k x -- assuming we already have k :: (S -> Int) -> _
+
+ok4 s = x (s :: S)
+
+bad :: S -> Int
+bad s = x s
+
+           </code></pre>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+
+{-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE DefaultSignatures #-}
+
+-- https://downloads.haskell.org/~ghc/8.0.1/docs/html/users_guide/glasgow_exts.html#derive-any-class
+-- http://stackoverflow.com/questions/17416575/using-generic-deriving-with-a-record-haskell
+-- https://www.reddit.com/r/haskell/comments/2pirdg/24_days_of_ghc_extensions_derivegeneric/
+
+class SPretty a where
+  sPpr :: a -> String
+  default sPpr :: Show a => a -> String
+  sPpr = show
+
+data Foo = Foo deriving (Show, SPretty)
+
+-- equivalent to:
+data Foo = Foo deriving Show
+instance SPretty Foo
+
+           </code></pre>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+
+{-# LANGUAGE NamedWildCards #-}
+
+somethingShowable :: Show _x => _x -> _
+somethingShowable x = show x
+-- Inferred type: Show w_x => w_x -> String
+
+           </code></pre>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+
+{-# LANGUAGE PatternSynonyms #-}
+
+data Type = App String [Type]
+
+-- without
+collectArgs :: Type -> [Type]
+collectArgs (App "->" [t1, t2]) = t1 : collectArgs t2
+collectArgs _                   = []
+
+isInt :: Type -> Bool
+isInt (App "Int" []) = True
+isInt _              = False
+
+isIntEndo :: Type -> Bool
+isIntEndo (App "->" [App "Int" [], App "Int" []]) = True
+isIntEndo _                                       = False
+
+           </code></pre>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+
+-- with
+pattern Arrow t1 t2 = App "->"    [t1, t2]
+pattern Int         = App "Int"   []
+pattern Maybe t     = App "Maybe" [t]
+
+collectArgs :: Type -> [Type]
+collectArgs (Arrow t1 t2) = t1 : collectArgs t2
+collectArgs _             = []
+
+isInt :: Type -> Bool
+isInt Int = True
+isInt _   = False
+
+isIntEndo :: Type -> Bool
+isIntEndo (Arrow Int Int) = True
+isIntEndo _               = False
+
+-- construct
+intEndo :: Type
+intEndo = Arrow Int Int
+
+-- unidirectional
+pattern Head x <- x:xs
+
+-- explicitly bidirectional
+pattern HeadC x <- x:xs where
+  HeadC x = [x]
+
+-- pattern P :: CReq => CProv => t1 -> t2 -> ... -> tN -> t
+pattern ExNumPat :: (Num a, Eq a) => (Show b) => b -> T a
+pattern ExNumPat x = MkT 42 x
+
+           </code></pre>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+
+{-# LANGUAGE FlexibleContexts #-}
+
+eval :: (MonadState EvalState m, MonadWriter [EvalLog] m, MonadReader Env m, MonadError EvalError m)
+     => Exp -> m Value -- ^ the parameters don't have to be variables
+
+           </code></pre>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+
+{-# LANGUAGE ConstraintKinds #-}
+
+type EvalContext m = (MonadState EvalState m, MonadWriter [EvalLog] m, MonadReader Env m, MonadError EvalError m)
+
+{-# LANGUAGE ConstraintKinds #-}
+{-# LANGUAGE TypeFamilies #-}
+
+import GHC.Exts (Constraint)
+import Data.Hashable
+import Data.HashSet
+
+type family Con a :: Constraint
+type instance Con [a] = (Ord a, Eq a)
+type instance Con (HashSet a) = (Hashable a)
+
+class Sized a where
+  gsize :: Con a => a -> Int
+
+instance Sized [a] where
+  gsize = length
+
+instance Sized (HashSet a) where
+  gsize = size
+
+           </code></pre>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+
+{-# LANGUAGE ScopedTypeVariables #-}
+
+sortImage f :: [a] -> [a] = sortBy cmp
+  where cmp :: a -> a -> Ordering
+        cmp x y = compare (f x) (f y)
+
+           </code></pre>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+
+{-# LANGUAGE ScopedTypeVariables #-} -- type of lamda expression argument
+
+import Control.Exception
+
+main :: IO ()
+main = do
+    error "bad" `catch` \(e :: SomeException) -> do
+        putStrLn $ "Got an exception: " ++ show e
+    return ()
+
+           </code></pre>
+        </section>
+
+        <section>
+          <h2>Category</h2>
+          <pre><code class="haskell" data-trim data-noescape>
+class Category cat where
+    -- | the identity morphism
+    id :: cat a a
+    -- | morphism composition
+    (.) :: cat b c -> cat a b -> cat a c
+
+instance Category (->) where<span class="fragment">
+    id = GHC.Base.id
+    (.) = (GHC.Base..)
+</span>
+-- | Right-to-left composition
+(<<<) :: Category cat => cat b c -> cat a b -> cat a c
+(<<<) = (.)
+-- | Left-to-right composition
+(>>>) :: Category cat => cat a b -> cat b c -> cat a c
+f >>> g = g . f
+           </code></pre>
+        </section>
+
+        <section>
+            <img src="img/arrows.png">
+        </section>
+
+        <section>
+          <h2>Arrows</h2>
+          <pre><code class="haskell" data-trim data-noescape>
+class Category a => Arrow a where
+    {-# MINIMAL arr, (first | (***)) #-}
+    arr :: (b -> c) -> a b c -- | Lift a function to an arrow.
+    -- | Send the first component of the input through the argument arrow, and copy the rest unchanged to the output.
+    first :: a b c -> a (b,d) (c,d)
+    first = (*** id)
+    second :: a b c -> a (d,b) (d,c)
+    second = (id ***)
+    -- | Split the input between the two argument arrows and combine  their output.  Note that this is in general not a functor.
+    (***) :: a b c -> a b' c' -> a (b,b') (c,c')
+    f *** g = first f >>> arr swap >>> first g >>> arr swap
+      where swap ~(x,y) = (y,x)
+    -- | Fanout: send the input to both argument arrows and combine their output.
+    (&&&) :: a b c -> a b c' -> a b (c,c')
+    f &&& g = arr (\b -> (b,b)) >>> f *** g
+           </code></pre>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+
+instance Arrow (->) where
+    arr f = f
+    (f *** g) ~(x,y) = (f x, g y)
+
+newtype Kleisli m a b = Kleisli { runKleisli :: a -> m b }
+
+instance Monad m => Category (Kleisli m) where
+    id = Kleisli return
+    (Kleisli f) . (Kleisli g) = Kleisli (\b -> g b >>= f)
+
+instance Monad m => Arrow (Kleisli m) where
+    arr f = Kleisli (return . f)
+    first  (Kleisli f) = Kleisli (\ ~(b,d) -> f b >>= \c -> return (c,d))
+    second (Kleisli f) = Kleisli (\ ~(d,b) -> f b >>= \c -> return (d,c))
+           </code></pre>
+        </section>
+
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+split :: (Arrow a) => a b (b, b)
+split = arr (\x -> (x,x))
+
+unsplit :: (Arrow a) => (b -> c -> d) -> a (b, c) d
+unsplit = arr . uncurry
+           </code></pre>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+newtype SimpleFunc a b = SimpleFunc {
+    runF :: (a -> b)
+}
+
+instance Arrow SimpleFunc where
+    arr f = SimpleFunc f
+    first (SimpleFunc f) = SimpleFunc (mapFst f)
+                  where mapFst g (a,b) = (g a, b)
+    second (SimpleFunc f) = SimpleFunc (mapSnd f)
+                  where mapSnd g (a,b) = (a, g b)
+
+instance Category SimpleFunc where
+    (SimpleFunc g) . (SimpleFunc f) = SimpleFunc (g . f)
+    id = arr id
+           </code></pre>
+        </section>
+
+         <section>
+          <pre><code class="haskell" data-trim data-noescape>
+f, g :: SimpleFunc Int Int
+f = arr (`div` 2)
+g = arr (\x -> x*3 + 1)
+
+h :: SimpleFunc Int Int
+h = liftA2 (+) f g
+
+hOutput :: Int
+hOutput = runF h 8
+           </code></pre>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+8 -> (8, 8)             split
+(8, 8) -> (4, 8)        first f (x `div` 2 of the first element)
+(4, 8) -> (4, 25)       second g (3*x + 1 of the second element)
+(4, 25) -> 29           applies (+) to tuple elements.
+          +------> f ---------+
+          |                   v
+8 ---> (split)          (unsplit (+)) ----> 29
+          |                   ^
+          +------> g ---------+
+           </code></pre>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+h' :: SimpleFunc Int Int
+h' = proc x -> do
+      fx <- f -< x
+      gx <- g -< x
+      returnA -< (fx + gx)
+
+hOutput' :: Int
+hOutput' = runF h' 8
+
+           </code></pre>
+        </section>
+
+        <section>
+          <pre><code class="haskell" data-trim data-noescape>
+
+           </code></pre>
+        </section>
+
+
+
 
     <section>
       <h2>The End</h2>
